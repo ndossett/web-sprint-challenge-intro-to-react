@@ -1,27 +1,31 @@
 import React, {useState, useEffect} from 'react';
 import axios from 'axios'
-import './App.css';
 import Character from './components/Character';
+import styled from 'styled-components'
 
+const AppDiv = styled.div`
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+`
 
 const App = () => {
 
-  let [character, setCharacter] = useState({})
+  const [characters, setCharacter] = useState([])
 
-  useEffect(() =>{
-  axios.get(`https://swapi.dev/api/people`)
+  useEffect(() => {
+  axios.get(`https://swapi.dev/api/people/`)
   .then(res => {
-    const data = res.data.results
-    return setCharacter(character = data)})
-  }, [])
-  
-  console.log(character[0])
+    setCharacter(res.data.results)
+  })}, [])
 
   return (
-    <div className="App">
+    <AppDiv >
       <h1 className="Header">Characters</h1>
-      {/* <Character person= {character}/> */}
-    </div>
+      {characters.map(char => <Character key={char.name} characters={char}/>)}
+    </AppDiv>
   );
 }
 
